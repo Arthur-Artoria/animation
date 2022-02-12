@@ -1,0 +1,46 @@
+1:设置Artoria和ArtoriaRule的三种指令卡图像
+
+
+技能方案1: 魔放给Artoria,充能给ArtoriaRuler,ArtoriaRuler的三技能不使用
+技能方案2: 魔放给Artoria,充能给ArtoriaRuler,ArtoriaRuler的三技能使用
+技能方案3: 魔放给ArtoriaRuler,充能给Artoria,ArtoriaRuler的三技能使用
+
+roundFirst:
+  1:展开指令卡选择
+
+  2: 是否存在 Artoria 红色和蓝色指令卡各一张
+    2.1: 如果存在,检测是否存在第三张指令卡
+      2.1.1: 如果存在 执行 技能方案1, Artoria 红 随意 蓝色 三连
+      2.1.2: 如果不存在,检测是否存在ArtoriaRuler的红色或蓝色指令卡一张
+        2.1.2.1: 如果存在,执行技能方案1, 随意角色的红色卡 随意指令卡 Artoria蓝色
+        2.1.2.2: 如果不存在,执行 洗牌,重新检测
+        2.1.2.3: 洗牌已用,退出副本
+    2.2: 不存在,检测是否存在ArtoriaRuler的红色和蓝色指令卡各一张
+      2.2.1:如果存在,
+
+
+
+  2:检测是否存在Artoria的蓝色指令卡
+    2.1:如果存在两张,检测是否存在第三张Artoria的指令卡
+
+      2.1.1: 如果存在红色指令卡, 执行 技能方案1 Artoria 红 蓝 蓝 三连
+      2.1.2: 如果存在绿色指令卡, 执行 技能方案1 Artoria 蓝 绿 蓝 三连
+
+      2.1.3: 如果不存在, 检测是否存在 ArtoriaRuler 的红色或蓝色指令卡
+        2.1.3.1: 如果存在红色, 执行 技能方案2 设置 Artoria Artoria ArtoriaRuler 的指令卡选择
+        2.1.3.2: 如果存在蓝色, 执行 技能方案2 设置 ArtoriaRuler Artoria Artoria 的指令卡选择
+        2.1.3.3: 如果不存在, 执行 指令卡切换, 重新执行 第一步
+
+    2.2:如果存在一张,检测是否存在 Artoria 的其他指令卡
+      2.2.1: 如果存在2张红色, 执行 技能方案1 设置 Artoria 红 红 蓝 三连
+      2.2.2: 如果存在1张红色,一张绿色, 执行 技能方案1 设置 Artoria 红 绿 蓝 三连
+      2.2.2: 如果仅存在1张红色, 检测是否存在 ArtoriaRuler 的红色或蓝色指令卡
+        2.2.2.1: 如果存在红色, 执行 技能方案2 设置 ArtoriaRuler Artoria 红 蓝 的指令卡选择
+        2.2.2.2: 如果存在蓝色, 执行 技能方案2 设置 Artoria红 ArtoriaRuler Artoria蓝 的指令卡选择
+        2.2.2.3: 如果不存在, 执行 指令卡切换, 重新执行 第一步
+      2.2.3: 检测是否存在ArtoriaRuler的蓝色指令卡
+    2.3:不存在蓝色指令卡,检测是否存在ArtoriaRuler的蓝色指令卡
+      2.3.1: 如果存在,检测是否存在 ArtoriaRuler 的其他指令卡
+        2.3.1.1: 如果存在2张红色
+        
+  3:如果有两张,检测是否存在第三张 Artoria的卡片,如果有 执行 Artoria 三连,如果不存在第三章

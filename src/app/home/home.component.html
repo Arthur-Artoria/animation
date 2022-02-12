@@ -1,0 +1,16 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-searchbar [animated]="true" inputmode="search" class="home-content__search"
+                   (ionChange)="handleSearchChange($event)"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" [fullscreen]="true">
+  <div class="home-content">
+    <ion-list *ngIf="animations$">
+      <app-animation-card *ngFor="let animation of animations$ | async" [animation]="animation"
+                          (click)="handleAnimationCardClick(animation)">
+      </app-animation-card>
+    </ion-list>
+  </div>
+</ion-content>

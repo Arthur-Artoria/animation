@@ -1,0 +1,17 @@
+<ion-content>
+  <ion-segment (ionChange)="handleSegmentChange($event)" [value]="videoType">
+    <ion-segment-button *ngFor="let type of videoTypes;let i=index" [value]="i">
+      <ion-label>{{type}}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let name of videoNames;let i = index" class="ion-text-center" size="2">
+        <ion-button class="animation-video__item" (ionFocus)="checkVideo.emit(i)">
+          {{name}}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

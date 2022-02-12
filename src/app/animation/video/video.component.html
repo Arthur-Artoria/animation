@@ -1,0 +1,16 @@
+<ion-content>
+  <ion-buttons class="animation-video__actions">
+    <ion-button color="primary" (click)="prevClick.emit()">
+      上一集
+    </ion-button>
+    <ion-button color="primary" (click)="backClick.emit()">
+      返回列表
+    </ion-button>
+    <ion-button color="primary" (click)="nextClick.emit()">
+      下一集
+    </ion-button>
+  </ion-buttons>
+
+  <app-video-player [videoSrc]="videoSrc"></app-video-player>
+
+</ion-content>

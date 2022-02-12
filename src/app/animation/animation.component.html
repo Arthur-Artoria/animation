@@ -1,0 +1,18 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      {{animationName}}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-video *ngIf="visibleVideoPlayer;" [animationVideo]="checkVideo" (backClick)="handleSwitchVisibleVideoPlayer()"
+             (prevClick)="handleChangeVideo('prev')" (nextClick)="handleChangeVideo('next')"></app-video>
+  <app-episodes *ngIf="!visibleVideoPlayer" [videoTypes]="videoTypes" [(videoType)]="checkVideoType"
+                (checkVideo)="handleVideoClick($event)" [videoNames]="checkVideoNames">
+  </app-episodes>
+</ion-content>
