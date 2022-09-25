@@ -1,7 +1,8 @@
 import { Box, Flex } from 'native-base';
 import React, { FC, useCallback, useEffect, useState } from 'react';
+import { Linking } from 'react-native';
 import { getPlayUrl, getVideoData } from '../../apis';
-import { useAppRoute } from '../../navigation';
+import { Screens, useAppRoute } from '../../navigation';
 import { Tabs } from './components/Tabs';
 import { VideoItems } from './components/VideoItems';
 import { Item } from './type';
@@ -21,11 +22,21 @@ export const Video: FC = () => {
     })();
   }, [video.id]);
 
-  const handelVideoClick = useCallback(async (videoItem: Item) => {
-    const url = await getPlayUrl(videoItem.web);
-    // http://www.xxmanmi.com/mp4.html?u=https%3A%2F%2Fyun.66dm.net%2FSBDM%2FJujutsuKaisen0.m3u8
-    console.log(url);
+  const openUrl = useCallback(async (videoUrl: string) => {
+    const url = `http://www.xxmanmi.com/mp4.html?u=${videoUrl}`;
+    const suppored = await Linking.canOpenURL(url);
+    if (suppored) {
+      await Linking.openURL(url);
+    }
   }, []);
+
+  const handelVideoClick = useCallback(
+    async (videoItem: Item) => {
+      const url = await getPlayUrl(videoItem.web);
+      openUrl(url);
+    },
+    [openUrl],
+  );
 
   if (!playList) {
     return <Box>Loading...</Box>;

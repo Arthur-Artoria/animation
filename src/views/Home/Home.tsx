@@ -2,7 +2,7 @@ import { debounce } from 'lodash';
 import React, { FC, useCallback, useState } from 'react';
 import { searchVideoList } from '../../apis';
 import { Header, View } from '../../components/Layouts';
-import { useAppNavigation } from '../../navigation';
+import { Screens, useAppNavigation } from '../../navigation';
 import { SearchBox } from './components/SearchBox';
 import { VideoList } from './components/VideoList';
 
@@ -17,7 +17,7 @@ export const Home: FC = () => {
 
   const handleVideoClick = useCallback(
     (video: SearchResponseItem) => {
-      navigation.navigate('Video', { video, title: video.name });
+      navigation.navigate(Screens.Video, { video, title: video.name });
     },
     [navigation],
   );
