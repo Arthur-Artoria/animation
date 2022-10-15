@@ -18,7 +18,7 @@ export const Tabs: FC<Props> = ({ playList, onChange }) => {
   const defaultValue = useMemo(() => String(playList[0].value), [playList]);
   const handleChange = useCallback(
     (value: string) => {
-      const video = playList.find(list => list.value === Number(value))!;
+      const video = playList.find(list => String(list.value) === value)!;
       onChange?.(video.list);
     },
     [onChange, playList],

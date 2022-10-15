@@ -24,7 +24,11 @@ const App = () => {
     <NavigationContainer>
       <NativeBaseProvider>
         <Stack.Navigator>
-          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{ title: 'Animation' }}
+          />
           <Stack.Screen name="Play" component={Play} />
           <Stack.Screen name="Video" component={Video} options={setTitle} />
         </Stack.Navigator>

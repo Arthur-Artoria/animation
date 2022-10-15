@@ -15,3 +15,11 @@ interface GetVideoDataResponse {
 }
 
 type GetPlayUrlResponse = string;
+
+interface GetNewResponseItem {
+  detail: string;
+  id: string;
+  img: string;
+  name: string;
+}
+type GetNewResponse = GetNewResponseItem[];

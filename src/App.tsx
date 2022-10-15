@@ -27,7 +27,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import { Home } from './src/views/Home';
+import { Home } from './views/Home';
 
 const Section: React.FC<
   PropsWithChildren<{

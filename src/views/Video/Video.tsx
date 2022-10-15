@@ -9,7 +9,7 @@ import { Item } from './type';
 
 export const Video: FC = () => {
   const route = useAppRoute<Screens.Video>();
-  const video = route.params.video;
+  const { video, origin } = route.params;
   const [playList, setPlayList] = useState<GetVideoDataResponse['playList']>();
   const [list, setList] = useState<GetVideoDataResponse['playList'][0]['list']>(
     [],
@@ -17,22 +17,22 @@ export const Video: FC = () => {
 
   useEffect(() => {
     (async () => {
-      const { playList: _playList } = await getVideoData(video.id);
-      setPlayList(_playList);
+      const { playList } = await getVideoData(video.id, origin);
+      setPlayList(playList);
     })();
-  }, [video.id]);
+  }, [origin, video.id]);
 
   const openUrl = useCallback(async (videoUrl: string) => {
-    const url = `http://www.xxmanmi.com/mp4.html?u=${videoUrl}`;
-    const suppored = await Linking.canOpenURL(url);
-    if (suppored) {
-      await Linking.openURL(url);
-    }
+    const url = `http://www.xxmanmi.com/mp4.html?u=${encodeURI(videoUrl)}`;
+    await Linking.openURL(url);
   }, []);
 
   const handelVideoClick = useCallback(
-    async (videoItem: Item) => {
-      const url = await getPlayUrl(videoItem.web);
+    async ({ web }: Item) => {
+      if (web.startsWith('http')) {
+        return openUrl(web);
+      }
+      const url = await getPlayUrl(web);
       openUrl(url);
     },
     [openUrl],
