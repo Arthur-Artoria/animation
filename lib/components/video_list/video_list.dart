@@ -2,9 +2,11 @@ import 'package:animation_flutter/models/video_info.dart';
 import 'package:flutter/material.dart';
 
 class VideoList extends StatefulWidget {
-  const VideoList({super.key, required this.videoInfoList});
+  const VideoList(
+      {super.key, required this.videoInfoList, this.handleVideoPressed});
 
   final List<VideoInfo> videoInfoList;
+  final void Function(VideoInfo videoInfo)? handleVideoPressed;
 
   @override
   State<VideoList> createState() => _VideoListState();
@@ -16,6 +18,11 @@ class _VideoListState extends State<VideoList> {
       leading: Image.network(videoInfo.img, width: 60, height: 60),
       title: Text(videoInfo.name),
       subtitle: Text(videoInfo.detail),
+      onTap: () {
+        if (widget.handleVideoPressed != null) {
+          widget.handleVideoPressed!(videoInfo);
+        }
+      },
     );
   }
 

@@ -3,6 +3,7 @@ import 'package:animation_flutter/models/video_info.dart';
 import 'package:animation_flutter/servers/helpers/types.dart';
 import 'package:animation_flutter/servers/server.dart';
 import 'package:animation_flutter/views/search/search.dart';
+import 'package:animation_flutter/views/video_detail/video_detail.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -19,8 +20,8 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
 
-    final request = FetchHomeContentRequest('acg', '0', 'japan');
-    futureVideoInfoList = fetchHomeContent(request);
+    final request = FetchLatestVideoListRequest('acg', '0', 'japan');
+    futureVideoInfoList = fetchLatestVideoList(request);
   }
 
   @override
@@ -28,6 +29,16 @@ class _HomeState extends State<Home> {
     void handleSearchPressed() {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => const Search(),
+      ));
+    }
+
+    void handleVideoPressed(VideoInfo videoInfo) {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => VideoDetail(
+          id: videoInfo.id,
+          cover: videoInfo.img,
+          name: videoInfo.name,
+        ),
       ));
     }
 
@@ -48,7 +59,10 @@ class _HomeState extends State<Home> {
         future: futureVideoInfoList,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return VideoList(videoInfoList: snapshot.data!);
+            return VideoList(
+              videoInfoList: snapshot.data!,
+              handleVideoPressed: handleVideoPressed,
+            );
           } else if (snapshot.hasError) {
             return Text(snapshot.error.toString());
           } else {

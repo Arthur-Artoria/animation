@@ -1,24 +1,28 @@
 import 'dart:convert';
-import 'dart:io';
 
+import 'package:animation_flutter/models/video_detail.dart';
 import 'package:animation_flutter/models/video_info.dart';
+import 'package:animation_flutter/servers/helpers/fetch.dart';
 import 'package:animation_flutter/servers/helpers/types.dart';
-import 'package:http/http.dart' as http;
 
-const host = 'www.xxmanmi.com';
+Future<List<VideoInfo>> fetchLatestVideoList(
+    FetchLatestVideoListRequest request) async {
+  List<VideoInfo> formatter(String body) {
+    return List<VideoInfo>.from(
+      jsonDecode(body).map((json) => VideoInfo.fromeJson(json)),
+    );
+  }
 
-Uri url(String paths, [Map<String, dynamic>? queryParameters]) {
-  return Uri.http(host, paths, queryParameters);
+  return Fetch<List<VideoInfo>>.get('/yhdm/new', request).response(formatter);
 }
 
-Future<List<VideoInfo>> fetchHomeContent(
-    FetchHomeContentRequest request) async {
-  final response = await http.get(url('/yhdm/new', request.toJson()));
-
-  if (response.statusCode == 200) {
-    return List<VideoInfo>.from(
-        jsonDecode(response.body).map((json) => VideoInfo.fromeJson(json)));
-  } else {
-    throw const HttpException('Failed request');
+Future<List<VideoDetail>> fetchLatestVideo(
+    FetchLatestVideoRequest request) async {
+  List<VideoDetail> formatter(String body) {
+    return List<VideoDetail>.from(jsonDecode(body)
+        .map((detailJson) => VideoDetail.fromeJson(detailJson)));
   }
+
+  return Fetch<List<VideoDetail>>.get('/yhdm/playList', request)
+      .response(formatter);
 }
