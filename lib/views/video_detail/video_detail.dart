@@ -1,26 +1,28 @@
+import 'package:animation_flutter/models/video_detail.dart' as video;
 import 'package:animation_flutter/servers/helpers/types.dart';
 import 'package:animation_flutter/servers/server.dart';
 import 'package:animation_flutter/views/player/player.dart';
 import 'package:animation_flutter/views/video_detail/components/episode.dart';
 import 'package:flutter/material.dart';
-import 'package:animation_flutter/models/video_detail.dart' as video;
 
-class VideoDetail extends StatefulWidget {
-  const VideoDetail(
-      {super.key, required this.id, required this.cover, required this.name});
+enum VideoType { home, search }
 
-  final String cover;
+class VideoDetailView extends StatefulWidget {
+  const VideoDetailView(
+      {super.key, required this.id, required this.name, required this.type});
+
   final String name;
   final String id;
+  final VideoType type;
 
   @override
-  State<VideoDetail> createState() => _VideoDetailState();
+  State<VideoDetailView> createState() => _VideoDetailViewState();
 }
 
-class _VideoDetailState extends State<VideoDetail>
+class _VideoDetailViewState extends State<VideoDetailView>
     with TickerProviderStateMixin {
   late TabController _tabController;
-  late Future<List<video.VideoDetail>> futureLatestVideo;
+  late Future<List<video.VideoDetail>> futureVideo;
   late video.VideoDetail curVideo;
 
   @override
@@ -28,11 +30,11 @@ class _VideoDetailState extends State<VideoDetail>
     super.initState();
 
     // fetch video details by video id.
-    final request = FetchLatestVideoRequest(widget.id);
-    futureLatestVideo = fetchLatestVideo(request);
+    final request = FetchVideoRequest(widget.id, widget.type);
+    futureVideo = fetchVideo(request);
   }
 
-  void handleEpisodePressed(video.Episode episode) {
+  void handleEpisodePressed(video.Episode episode) async {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -84,7 +86,7 @@ class _VideoDetailState extends State<VideoDetail>
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<video.VideoDetail>>(
-      future: futureLatestVideo,
+      future: futureVideo,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final length = snapshot.data!.length;
@@ -96,7 +98,9 @@ class _VideoDetailState extends State<VideoDetail>
             title: Text(widget.name),
             bottom: snapshot.hasData ? renderTabBar(snapshot.data!) : null,
           ),
-          body: snapshot.hasData ? renderTabBarView(snapshot.data!) : null,
+          body: snapshot.hasData
+              ? renderTabBarView(snapshot.data!)
+              : const Center(child: CircularProgressIndicator()),
         );
       },
     );

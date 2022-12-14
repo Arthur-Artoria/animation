@@ -34,10 +34,10 @@ class _HomeState extends State<Home> {
 
     void handleVideoPressed(VideoInfo videoInfo) {
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => VideoDetail(
+        builder: (context) => VideoDetailView(
           id: videoInfo.id,
-          cover: videoInfo.img,
           name: videoInfo.name,
+          type: VideoType.home,
         ),
       ));
     }
@@ -55,20 +55,22 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      body: FutureBuilder<List<VideoInfo>>(
-        future: futureVideoInfoList,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return VideoList(
-              videoInfoList: snapshot.data!,
-              handleVideoPressed: handleVideoPressed,
-            );
-          } else if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
-          } else {
-            return const CircularProgressIndicator();
-          }
-        },
+      body: Center(
+        child: FutureBuilder<List<VideoInfo>>(
+          future: futureVideoInfoList,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return VideoList(
+                videoInfoList: snapshot.data!,
+                onVideoPressed: handleVideoPressed,
+              );
+            } else if (snapshot.hasError) {
+              return Text(snapshot.error.toString());
+            } else {
+              return const CircularProgressIndicator();
+            }
+          },
+        ),
       ),
     );
   }

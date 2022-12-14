@@ -11,19 +11,20 @@ class Episode {
 
 class VideoDetail {
   final String name;
-  final String value;
+  final dynamic value;
   final List<Episode> list;
 
   const VideoDetail(
       {required this.name, required this.value, required this.list});
 
   factory VideoDetail.fromeJson(Map<String, dynamic> json) {
+    List<dynamic> list =
+        json.containsKey('list') ? json['list'] : json['playList'];
+
     return VideoDetail(
       name: json['name'],
-      value: json['value'],
-      list: (json['list'] as List<dynamic>)
-          .map((e) => Episode.fromeJson(e))
-          .toList(),
+      value: json.containsKey('value') ? json['value'] : null,
+      list: list.map((e) => Episode.fromeJson(e)).toList(),
     );
   }
 }

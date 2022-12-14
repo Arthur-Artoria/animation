@@ -1,7 +1,12 @@
+import 'dart:async';
+
 import 'package:animation_flutter/models/video_detail.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+
+import '../../servers/helpers/types.dart';
+import '../../servers/server.dart';
 
 class Player extends StatefulWidget {
   const Player({super.key, required this.url, required this.videoDetail});
@@ -35,8 +40,9 @@ class _PlayerState extends State<Player> {
   }
 
   Future<void> initPlayer() async {
-    videoPlayerController = VideoPlayerController.network(widget.url);
     try {
+      final url = await checkUrl();
+      videoPlayerController = VideoPlayerController.network(url);
       await videoPlayerController.initialize();
       chewieController = ChewieController(
         videoPlayerController: videoPlayerController,
@@ -47,6 +53,19 @@ class _PlayerState extends State<Player> {
         isError = true;
       });
     }
+  }
+
+  Future<String> checkUrl() async {
+    if (widget.url.startsWith(RegExp(r'http'))) {
+      return widget.url;
+    } else {
+      return _fetchVideoUrl();
+    }
+  }
+
+  Future<String> _fetchVideoUrl() {
+    final request = FetchVideoUrlRequest(widget.url);
+    return fetchVideoUrl(request);
   }
 
   @override
