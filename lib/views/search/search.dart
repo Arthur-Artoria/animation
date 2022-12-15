@@ -14,13 +14,14 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
-  Future<List<VideoInfo>>? futureVideoInfoList;
+  bool isLoading = false;
   List<VideoInfo>? videoInfoList;
   Error? fetchVideoListError;
 
   void handleSubmitted(String value) async {
     setState(() {
-      videoInfoList = null;
+      isLoading = true;
+      fetchVideoListError = null;
     });
 
     final request = SearchVideoListRequest(value);
@@ -32,6 +33,10 @@ class _SearchState extends State<Search> {
     } catch (e) {
       setState(() {
         fetchVideoListError = e as Error?;
+      });
+    } finally {
+      setState(() {
+        isLoading = false;
       });
     }
   }
@@ -50,7 +55,9 @@ class _SearchState extends State<Search> {
   }
 
   Widget renderContent() {
-    if (fetchVideoListError != null) {
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    } else if (fetchVideoListError != null) {
       return Center(child: Text(fetchVideoListError.toString()));
     } else if (videoInfoList != null) {
       return VideoList(
@@ -58,7 +65,7 @@ class _SearchState extends State<Search> {
         onVideoPressed: handleVideoPressed,
       );
     } else {
-      return const Center(child: CircularProgressIndicator());
+      return Container();
     }
   }
 

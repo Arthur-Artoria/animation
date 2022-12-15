@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:animation_flutter/models/video_info.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +18,11 @@ class _VideoListState extends State<VideoList> {
   Widget _buildRow(VideoInfo videoInfo) {
     return ListTile(
       leading: videoInfo.img != null
-          ? Image.network(videoInfo.img!, width: 60, height: 60)
+          ? Image.network(
+              videoInfo.img!,
+              width: 60,
+              height: 60,
+            )
           : null,
       title: Text(videoInfo.name),
       subtitle: Text(videoInfo.detail),

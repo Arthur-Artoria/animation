@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:animation_flutter/models/video_detail.dart';
+import 'package:better_player/better_player.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -46,6 +48,9 @@ class _PlayerState extends State<Player> {
       await videoPlayerController.initialize();
       chewieController = ChewieController(
         videoPlayerController: videoPlayerController,
+        aspectRatio: 16 / 9,
+        showOptions: false,
+        autoPlay: true,
       );
       setState(() {});
     } catch (e) {
@@ -68,11 +73,23 @@ class _PlayerState extends State<Player> {
     return fetchVideoUrl(request);
   }
 
+  void handleVerticalDragStart(DragStartDetails details) {
+    log('start: $details');
+  }
+
+  void handleVerticalDragUpdate(DragUpdateDetails details) {
+    log('update: $details');
+  }
+
+  void handleVerticalDragEnd(DragEndDetails details) {
+    log('end: $details');
+  }
+
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final width = size.width;
-    final height = width * 9 / 16 + 25;
+    // final size = MediaQuery.of(context).size;
+    // final width = size.width;
+    // final height = width * 9 / 16 + 25;
     late Widget content;
 
     if (isError) {
@@ -88,8 +105,19 @@ class _PlayerState extends State<Player> {
         ],
       );
     } else {
-      content = SizedBox(
-        height: height,
+      // BetterPlayer.network(
+      //     widget.url,
+      //     betterPlayerConfiguration: const BetterPlayerConfiguration(
+      //       aspectRatio: aspectRatio,
+      //     ),
+      //   )
+      // content = SizedBox(
+      //   height: height,
+      //   child: Chewie(controller: chewieController!),
+      // );
+      const aspectRatio = 16 / 9;
+      content = AspectRatio(
+        aspectRatio: aspectRatio,
         child: Chewie(controller: chewieController!),
       );
     }
@@ -98,7 +126,7 @@ class _PlayerState extends State<Player> {
       appBar: AppBar(
         title: Text(widget.videoDetail.name),
       ),
-      body: Center(
+      body: content = Center(
         child: content,
       ),
     );
